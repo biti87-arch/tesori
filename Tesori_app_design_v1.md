@@ -184,6 +184,16 @@ Tipo di insediamento → numero di oggetti, speciali e offset; grado = PL − of
 
 **Stile:** tabelle della Collana (intestazione #D4A84B, bordi #8B6914, righe alternate #F5EDD0/#FAF3E0), condizioni di stato in rosso #C00000, impaginazione per telefono come le altre app.
 
+## F. PDF DEI RISULTATI ✅ (richiesta di Massy del 05/10/2026)
+
+| Aspetto | Decisione |
+|---|---|
+| Dove | pulsante «PDF» sotto i risultati di Tesoro, Partenza e Mercato. Android: salvataggio e menu Condividi; Windows: finestra «Salva con nome»; nella pagina di prova (artifact) il download è bloccato e la pagina lo dice |
+| Prima del PDF | campo «Titolo» (Partenza: «Nome del personaggio»); Partenza: tocco sul candidato scelto (armatura, scudo, armi) e spunta sulle parti applicate |
+| Contenuto | intestazione (titolo, livello o grado, tiro, data) · tabella di riepilogo · descrizioni complete (effetto, pergamene con CD e LI, tintura, nota (*) non superata, set) · Partenza: combattimento (candidato scelto, o entrambi), oggetti vari e compensazioni, parti (applicate con l'effetto, le altre in elenco breve), pozioni e oro · Mercato: anche le pergamene dei templi · totale |
+| Stile | A4, margini 20/15 mm; titoli Gelasio grassetto #C45911 (stessa metrica di Georgia), testo Tinos giustificato (stessa metrica di Times New Roman), tabelle della Collana (#D4A84B, #8B6914, #F5EDD0/#FAF3E0), condizioni di stato in rosso #C00000, numero di pagina centrato. Font incorporati nell'app (funziona offline); ★ → *, → → », ≥/≤ → >=/<= (caratteri assenti dai font) |
+| File | `sorgenti/pdf.js` (jsPDF 2.5.2 in `sorgenti/vendor/`, font in `sorgenti/font/`); nome del file es. `Partenza_L8_Brann_2026-10-05.pdf` |
+
 ## E. CORREZIONI PER LA V2.7.1 (da aggiungere alla sezione K di `Tesori_database_design_v2.md`)
 
 | # | Dove | Correzione |

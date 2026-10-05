@@ -6,8 +6,12 @@ import json, sys, os, re
 R = os.path.dirname(os.path.abspath(__file__))
 leggi = lambda f: open(os.path.join(R, f), encoding='utf8').read()
 mini = lambda f: json.dumps(json.load(open(os.path.join(R, f), encoding='utf8')), ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+import base64
 t = leggi('template.html')
-for k, v in (('__DATI__', mini('tesori_db_v1.1.json')), ('__INC__', mini('incantesimi.json')), ('__MOTORE__', leggi('motore.js'))):
+FONT = json.dumps({k: base64.b64encode(open(os.path.join(R, 'font', k + '.ttf'), 'rb').read()).decode() for k in ('tinos-r', 'tinos-b', 'tinos-i', 'gelasio-b')})
+for k, v in (('__JSPDF__', leggi('vendor/jspdf.umd.min.js').replace('</script', '<\\/script')), ('__FONT__', FONT),
+             ('__PDF__', leggi('pdf.js')), ('__MOTORE__', leggi('motore.js')),
+             ('__DATI__', mini('tesori_db_v1.1.json')), ('__INC__', mini('incantesimi.json'))):
     assert t.count(k) == 1, k
     t = t.replace(k, v)
 if len(sys.argv) > 1:

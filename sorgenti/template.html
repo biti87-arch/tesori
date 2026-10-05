@@ -149,7 +149,12 @@ const DB = __DATI__;
 const INC = __INC__;
 </script>
 <script>
+__JSPDF__
+</script>
+<script>
+const FONT_PDF = __FONT__;
 __MOTORE__
+__PDF__
 </script>
 <script>
 'use strict';
@@ -162,7 +167,7 @@ const KEY = 'tesori_app_v1';
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const COND = ['Azzoppat[oaie]', 'Colt[oaie] alla sprovvista', 'Offuscat[oaie]', 'Sempre pront[oaie]', 'Affaticat[oaie]', 'Abbagliat[oaie]', 'Accecat[oaie]', 'Accovacciat[oaie]',
   'Affascinat[oaie]', 'Assordat[oaie]', 'Barcollant[ei]', 'Confus[oaie]', 'Esaust[oaie]', 'Frastornat[oaie]', 'Immobilizzat[oaie]', 'Impreparat[oaie]', 'In lotta', 'Inabil[ei]',
-  'Incorpore[oaie]', 'Incorporei', 'Indifes[oaie]', 'Inferm[oaie]', 'Intralciat[oaie]', 'Invisibil[ei]', 'Morent[ei]', 'Mort[oaie]', 'Nauseat[oaie]', 'Paralizzat[oaie]',
+  'Incorpore[oaie]', 'Incorporei', 'Indifes[oaie]', 'Inferm[oaie]', 'Intralciat[oaie]', 'Invisibil[ei]', 'Morent[ei]', '(?<!non )Mort[oaie]', 'Nauseat[oaie]', 'Paralizzat[oaie]',
   'Scoss[oaie]', 'Spaventat[oaie]', 'In preda al panico', 'Pietrificat[oaie]', 'Priv[oaie] di sensi', 'Pron[oaie]', 'Rott[oaie]', 'Sanguinant[ei]', 'Scheggiat[oaie]',
   'Stabilizzat[oaie]', 'Stordit[oaie]'];
 const COND_RE = new RegExp('(?<![\\p{L}])(' + COND.join('|') + ')(?![\\p{L}])', 'giu');
@@ -234,7 +239,7 @@ function cardTesoro(t, k, path, opz) {
     top += '<span class="tag">Oggetto vario</span>';
     if (o.speciale) top += '<span class="tag rar">Speciale</span>';
     corpo = '<div class="nome"><button data-act="sk" data-k="' + k + '" data-p="' + path + '.oggetto">' + esc(o.nome) + '</button><span class="pz">' + (o.prezzo == null ? '—' : fmt(o.prezzo)) + '</span></div>' +
-      '<div class="meta">' + [o.categoria, o.slot].filter(Boolean).map(esc).join(' · ') + (o.prezzo_stimato ? ' · prezzo stimato' : '') + '</div>';
+      '<div class="meta">' + [o.categoria, o.slot !== o.categoria ? o.slot : ''].filter(Boolean).map(esc).join(' · ') + (o.prezzo_stimato ? ' · prezzo stimato' : '') + '</div>';
     if (o.pergamene) corpo += bloccoPergamene(o, k, path + '.oggetto');
     if (o.tintura) corpo += '<div class="note">Applicata a: <b>' + esc(o.tintura.bersaglio) + '</b> perfetto adatto al gruppo (+ oggetto perfetto: arma +300, armatura o scudo +150 mo, oltre al prezzo base).</div>';
   }
@@ -249,9 +254,11 @@ function cardTesoro(t, k, path, opz) {
 function piede(k, res) {
   const t = m.totale(res);
   const salvato = G.storico.some(h => h.id === res.id);
-  return '<div class="tot"><span>Totale</span><b>' + fmt(t.mo) + (t.senza ? ' <small class="note">+ ' + t.senza + ' senza prezzo</small>' : '') + '</b></div>' +
+  return '<label class="field"><span class="label">' + (k === 'partenza' ? 'Nome del personaggio' : 'Titolo') + ' (per il PDF)</span><input class="search" id="titolo-' + k + '" data-set="ultimo.' + k + '.titolo" value="' + esc(res.titolo || '') + '" placeholder="' + (k === 'partenza' ? 'es. Brann, guerriero' : 'facoltativo') + '"></label>' +
+    '<div class="tot"><span>Totale</span><b>' + fmt(t.mo) + (t.senza ? ' <small class="note">+ ' + t.senza + ' senza prezzo</small>' : '') + '</b></div>' +
     '<div class="azioni"><button class="btn" data-act="salva" data-k="' + k + '">' + (salvato ? 'Aggiorna nello storico' : 'Salva') + '</button>' +
-    '<button class="btn" data-act="copia" data-k="' + k + '">Copia</button><button class="btn" data-act="condividi" data-k="' + k + '">Condividi</button></div>';
+    '<button class="btn" data-act="copia" data-k="' + k + '">Copia</button><button class="btn" data-act="condividi" data-k="' + k + '">Condividi</button>' +
+    '<button class="btn pri" data-act="pdf" data-k="' + k + '">PDF</button></div>' + (IN_PROVA ? '<div class="note">Nella pagina di prova il PDF non si può scaricare: si crea nell\'app Android e Windows.</div>' : '');
 }
 
 /* ---------- Tesoro ---------- */
@@ -309,15 +316,18 @@ function vistaPartenza() {
   h += '<button class="btn pri big" data-act="genera">Genera l\'equipaggiamento</button></div>';
   if (L < 2) h += '<div class="note">Il 1° livello segue le regole del Volume 1.</div>';
   if (r) {
-    h += '<div class="res"><h2>Combattimento</h2>' + r.combattimento.map(c => '<div class="tes"><div class="top"><b>' + esc(c.voce) + '</b></div><div class="txt">' + c.candidati.map(esc).join(' <span class="note">oppure</span> ') + '</div>' + (c.nota ? '<div class="note">' + esc(c.nota) + '</div>' : '') + '</div>').join('') +
+    h += '<div class="res"><h2>Combattimento</h2>' + r.combattimento.map((c, ci) => '<div class="tes"><div class="top"><b>' + esc(c.voce) + '</b></div><div class="chips">' +
+      c.candidati.map((x, xi) => '<button class="chip" data-act="scegli" data-i="' + ci + '" data-v="' + xi + '" aria-pressed="' + (c.scelta === xi) + '">' + esc(x) + '</button>').join('') + '</div>' +
+      (c.nota ? '<div class="note">' + esc(c.nota) + '</div>' : '') + '</div>').join('') +
       (r.combattimento.length ? '' : '<div class="note">Nessun equipaggiamento da combattimento.</div>') +
-      (r.combattimento.length ? '<div class="note">Si sceglie uno dei due candidati; il materiale solo se la classe impone una restrizione.</div>' : '') +
+      (r.combattimento.length ? '<div class="note">Tocca il candidato scelto; il materiale si sceglie solo se la classe impone una restrizione.</div>' : '') +
       '<h2>Oggetti vari</h2>' + r.vari.map((t, i) => cardTesoro(t, 'partenza', 'vari.' + i)).join('');
     if (r.extra.length) h += '<h2>Compensazioni</h2>' + r.extra.map((e, i) => e.tesoro ? '<div class="note">' + esc(e.motivo) + '</div>' + cardTesoro(e.tesoro, 'partenza', 'extra.' + i + '.tesoro') : '<div class="tes"><b>' + esc(e.motivo) + '</b><div class="txt">' + esc(e.scelta) + '</div></div>').join('');
-    if (r.parti.length) h += '<h2>Parti di potenziamento</h2><div class="note">Il giocatore applica le parti che vuole entro il tetto; quelle non applicate non si conservano.</div>' +
+    if (r.parti.length) h += '<h2>Parti di potenziamento</h2><div class="note">Il giocatore applica le parti che vuole entro il tetto; quelle non applicate non si conservano. Spunta le parti applicate: il PDF le riporta per prime, con l\'effetto.</div>' +
       r.parti.map((p, pi) => '<div class="tes parti"><div class="top"><b>' + esc(p.oggetto) + '</b><span class="tag">' + esc(p.categoria) + '</span><span class="tag acc">tetto ' + p.tetto + '</span></div>' +
         p.gruppi.map((g, gi) => '<details' + det('parti.' + pi + '.' + gi, gi === 0) + '><summary>' + g.valore + ' · ' + g.parti.length + ' parti</summary>' +
-          g.parti.map((c, ci) => '<div class="cap"><button style="all:unset;cursor:pointer" data-act="cap" data-k="partenza" data-p="parti.' + pi + '.gruppi.' + gi + '.parti.' + ci + '"><b>' + esc(c.capacita) + '</b></button>' +
+          g.parti.map((c, ci) => '<div class="cap"><span class="row" style="gap:8px;flex-wrap:nowrap;min-width:0"><input type="checkbox" title="Applicata" aria-label="Applicata" style="width:20px;height:20px;accent-color:var(--accent);flex-shrink:0" data-chk="ultimo.partenza.parti.' + pi + '.gruppi.' + gi + '.parti.' + ci + '.applicata"' + (c.applicata ? ' checked' : '') + '>' +
+            '<button style="all:unset;cursor:pointer;min-width:0" data-act="cap" data-k="partenza" data-p="parti.' + pi + '.gruppi.' + gi + '.parti.' + ci + '"><b>' + esc(c.capacita) + '</b></button></span>' +
             '<button class="btn ico" data-act="rp" data-k="partenza" data-p="parti.' + pi + '.gruppi.' + gi + '" data-i="' + ci + '">↻</button></div>').join('') + '</details>').join('') + '</div>').join('');
     else if (r.livello < 4) h += '<div class="note">Parti di potenziamento dal 4° livello.</div>';
     h += '<h2>Pozioni e oro</h2><div class="tes">' + r.pozioni.map(p => '<div class="nome"><span>' + esc(p.nome) + '</span><span class="pz">' + fmt(p.prezzo) + '</span></div>').join('') + '<div class="note">Oro: a cura del DM.</div></div>' + piede('partenza', r) + '</div>';
@@ -535,6 +545,27 @@ async function condividi(testo) {
   else if (navigator.share) { try { await navigator.share({ title: 'Tesori', text: testo }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
   copia(testo);
 }
+const IN_PROVA = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+async function creaPdf(k) {
+  const res = G.ultimo[k];
+  if (!res) return;
+  let doc;
+  try { doc = PdfTesori.crea(m, res, { jsPDF: window.jspdf.jsPDF, font: FONT_PDF, extra: k === 'mercato' ? { pergamene: G.ultimo.mercatoPerg || [] } : {} }); }
+  catch (e) { toast('PDF non riuscito: ' + e.message); return; }
+  const nome = PdfTesori.nomeFile(res);
+  const P = window.Capacitor && window.Capacitor.Plugins;
+  if (P && P.Filesystem && P.Share) {
+    try {
+      const dati = doc.output('datauristring').split(',')[1];
+      const w = await P.Filesystem.writeFile({ path: nome, data: dati, directory: 'CACHE' });
+      await P.Share.share({ title: nome, files: [w.uri] });
+    } catch (e) { if (!/cancel/i.test(String(e && (e.message || e)))) toast('PDF non salvato: ' + (e.message || e)); }
+    return;
+  }
+  if (IN_PROVA) { toast('Il PDF si crea nell\'app Android o Windows'); return; }
+  doc.save(nome);
+  toast('PDF creato: ' + nome);
+}
 function setPath(path, val) {
   const ks = path.split('.'); let o = G;
   for (let i = 0; i < ks.length - 1; i++) o = o[ks[i]];
@@ -570,6 +601,8 @@ document.addEventListener('click', ev => {
       toast(j >= 0 ? 'Aggiornato nello storico' : 'Salvato nello storico'); break;
     }
     case 'copia': copia(m.testo(G.ultimo[k])); return;
+    case 'pdf': creaPdf(k); return;
+    case 'scegli': { const c = G.ultimo.partenza.combattimento[i], v = +b.dataset.v; c.scelta = c.scelta === v ? null : v; break; }
     case 'condividi': condividi(m.testo(G.ultimo[k])); return;
     case 'pliv': G.partenza.livello = Math.min(20, Math.max(2, G.partenza.livello + +b.dataset.v)); break;
     case 'ptipo': { const t = G.partenza.scudo.tipi, v = b.dataset.v; G.partenza.scudo.tipi = t.includes(v) ? t.filter(x => x !== v) : t.concat([v]); if (!G.partenza.scudo.tipi.length) G.partenza.scudo.tipi = [v]; break; }

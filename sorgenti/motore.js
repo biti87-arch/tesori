@@ -351,7 +351,7 @@
     function candidatiArma(categoria, tipo) {
       const pre = categoria === 'semplice' ? 'Arma semplice' : 'Arma da guerra';
       const t = tipo === 'tiro' ? 'Armi da tiro' : 'Armi da mischia';
-      return S.armi_armature_vol3.filter(a => a.tipo === 'Arma' && a.categoria.startsWith(pre) && a.categoria.includes(t));
+      return S.armi_armature_vol3.filter(a => a.tipo === 'Arma' && a.prezzo && a.categoria.startsWith(pre) && a.categoria.includes(t));   // senza scudi, armatura chiodata e colpo senz'armi (prezzo assente)
     }
     const SCUDI = { piccolo: 'Scudo piccolo', leggero: 'Scudo leggero', pesante: 'Scudo pesante', torre: 'Scudo torre' };
     function dueDiversi(l, tiri, et) {
@@ -390,17 +390,17 @@
       if (opz.marzialista) out.combattimento.push({ voce: 'Armatura', candidati: ['Bracciali dell\'armatura +' + Math.max(1, T)], nota: 'contano come armatura (B9)' });
       else if (opz.armatura && opz.armatura.usa) {
         const l = S.armi_armature_vol3.filter(a => a.tipo === 'Armatura' && a.categoria === 'Armatura ' + opz.armatura.categoria);
-        out.combattimento.push({ voce: 'Armatura ' + opz.armatura.categoria, candidati: dueDiversi(l, tiri, 'armatura').map(a => a.nome + ' (' + a.prezzo + ' mo)') });
+        out.combattimento.push({ voce: 'Armatura ' + opz.armatura.categoria, candidati: dueDiversi(l, tiri, 'armatura').map(a => a.nome + ' (' + fmt(a.prezzo) + ')') });
       }
       if (opz.scudo && opz.scudo.usa) {
         const l = S.armi_armature_vol3.filter(a => a.tipo === 'Scudo' && (opz.scudo.tipi || []).some(t => a.nome.startsWith(SCUDI[t])));
-        out.combattimento.push({ voce: 'Scudo', candidati: dueDiversi(l, tiri, 'scudo').map(a => a.nome + ' (' + a.prezzo + ' mo)') });
+        out.combattimento.push({ voce: 'Scudo', candidati: dueDiversi(l, tiri, 'scudo').map(a => a.nome + ' (' + fmt(a.prezzo) + ')') });
       }
       (opz.armi || []).forEach((a, i) => {
         const voce = 'Arma ' + (i + 1) + (a.distanza ? ' (a distanza)' : ' (da mischia)');
         if (a.modo === 'classe') out.combattimento.push({ voce, candidati: [tabellaClasse(a.tabella, tiri), tabellaClasse(a.tabella, tiri)], nota: 'Tabella Armi di Classe: ' + a.tabella });
         else if (a.modo === 'libera') out.combattimento.push({ voce, candidati: [a.nome || 'a scelta'], nota: 'categoria non presente nel Vol. 3: scelta del giocatore e del DM' });
-        else out.combattimento.push({ voce, candidati: dueDiversi(candidatiArma(a.categoria, a.tipo), tiri, 'arma').map(x => x.nome + ' (' + x.prezzo + ' mo)') });
+        else out.combattimento.push({ voce, candidati: dueDiversi(candidatiArma(a.categoria, a.tipo), tiri, 'arma').map(x => x.nome + ' (' + fmt(x.prezzo) + ')') });
       });
       out.tiri = tiri;
       // 2. oggetti vari: uno per grado da L al ½
