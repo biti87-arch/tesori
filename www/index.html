@@ -1139,13 +1139,21 @@ const FONT_PDF = {"tinos-r": "AAEAAAAOAIAAAwBgR0RFRgwiC6sAAE0YAAAAhEdQT1NO0Vb+AA
       spazio(lh(14) + 14);
       y += 4; font('Gelasio', 'bold', 14, ARANCIO); y += lh(14); doc.text(pulisci(t), ML, y); y += 2;
     }
-    function voce(nome, destra, meta) {
+    function voce(nome, destra, meta, casella) {
       spazio(lh(11) + lh(9.5) + 10);
       y += 2.5; font('Tinos', 'bold', 11);
+      const sx = casella ? 6 : 0;                    // casella da spuntare a mano (vuota) o già spuntata (applicata)
       const wD = destra ? doc.getTextWidth(pulisci(destra)) + 4 : 0;
-      const righe = doc.splitTextToSize(pulisci(nome), W - wD);
-      righe.forEach((r, i) => { y += lh(11); doc.text(r, ML, y); if (i === 0 && destra) doc.text(pulisci(destra), ML + W, y, { align: 'right' }); });
-      if (meta) { font('Tinos', 'italic', 9.5, GRIGIO); doc.splitTextToSize(pulisci(meta), W).forEach(r => { y += lh(9.5); doc.text(r, ML, y); }); }
+      const righe = doc.splitTextToSize(pulisci(nome), W - wD - sx);
+      righe.forEach((r, i) => {
+        y += lh(11);
+        if (i === 0 && casella) {
+          doc.setDrawColor.apply(doc, BORDO); doc.setLineWidth(0.35); doc.rect(ML, y - 3.4, 3.6, 3.6);
+          if (casella === 'si') { doc.setLineWidth(0.6); doc.setDrawColor.apply(doc, NERO); doc.line(ML + 0.7, y - 1.6, ML + 1.6, y - 0.5); doc.line(ML + 1.6, y - 0.5, ML + 3.2, y - 3.0); }
+        }
+        doc.text(r, ML + sx, y); if (i === 0 && destra) doc.text(pulisci(destra), ML + W, y, { align: 'right' });
+      });
+      if (meta) { font('Tinos', 'italic', 9.5, GRIGIO); doc.splitTextToSize(pulisci(meta), W - sx).forEach(r => { y += lh(9.5); doc.text(r, ML + sx, y); }); }
     }
     // paragrafo giustificato con le condizioni in rosso
     function paragrafo(testo, o) {
@@ -1221,9 +1229,9 @@ const FONT_PDF = {"tinos-r": "AAEAAAAOAIAAAwBgR0RFRgwiC6sAAE0YAAAAhEdQT1NO0Vb+AA
         paragrafo('Set: ' + o.set + (s ? ' — ' + s.bonus.map(b => b.pezzi + ' pezzi: ' + b.bonus).join(' ') : ''), { pt: 9.5, stile: 'italic' });
       }
     }
-    function schedaParte(p, etichetta) {
-      voce(p.capacita, p.categoria + ' ' + p.valore, etichetta + ' · capacità speciale (n° ' + p.n + (p.totale ? ' di ' + p.totale : '') + ')');
-      if (p.effetto) paragrafo(p.effetto);
+    function schedaParte(p, etichetta, casella) {
+      voce(p.capacita, p.categoria + ' ' + p.valore, etichetta + ' · capacità speciale (n° ' + p.n + (p.totale ? ' di ' + p.totale : '') + ')', casella);
+      if (p.effetto) paragrafo(p.effetto, casella ? { rientro: 6 } : {});
     }
     const data = new Date(res.data || Date.now()).toLocaleDateString('it-IT');
 
@@ -1266,17 +1274,14 @@ const FONT_PDF = {"tinos-r": "AAEAAAAOAIAAAwBgR0RFRgwiC6sAAE0YAAAAhEdQT1NO0Vb+AA
       res.vari.concat(extra.map(e => e.tesoro)).forEach(t => schedaOggetto(t.oggetto, 'G' + t.grado));
       if (res.parti.length) {
         sezione('Parti di potenziamento');
-        paragrafo('Il giocatore applica le parti che vuole entro il tetto; quelle non applicate non si conservano.', { pt: 9.5, stile: 'italic' });
+        paragrafo('Il giocatore sceglie e applica le parti che vuole entro il tetto di ogni oggetto (la somma dei valori non può superarlo); quelle non applicate non si conservano. Le caselle spuntate sono le parti già segnate come applicate nell\'app.', { pt: 9.5, stile: 'italic' });
         res.parti.forEach(p => {
           spazio(20); y += 3; font('Tinos', 'bold', 12, ARANCIO); y += lh(12); doc.text(pulisci((p.oggetto === p.categoria ? p.oggetto : p.oggetto + ' (' + p.categoria.toLowerCase() + ')') + ' · tetto ' + p.tetto), ML, y);
-          const tutte = []; p.gruppi.forEach(g => g.parti.forEach(c => tutte.push(c)));
-          const app = tutte.filter(c => c.applicata), altre = tutte.filter(c => !c.applicata);
-          if (app.length) app.forEach(c => schedaParte(c, 'Applicata'));
-          else paragrafo('Nessuna parte segnata come applicata.', { pt: 9.5, stile: 'italic', colore: GRIGIO });
-          if (altre.length) {
-            const perValore = {}; altre.forEach(c => (perValore[c.valore] = perValore[c.valore] || []).push(c.capacita));
-            paragrafo((app.length ? 'Non applicate — ' : 'Estratte — ') + Object.keys(perValore).sort().reverse().map(v => v + ': ' + perValore[v].join(', ')).join(' · '), { pt: 9.5, giustifica: false });
-          }
+          p.gruppi.forEach(g => {
+            spazio(16); y += 2; font('Tinos', 'bold', 10.5, BORDO); y += lh(10.5);
+            doc.text(pulisci('Parti ' + g.valore + ' (' + g.parti.length + ')'), ML, y);
+            g.parti.forEach(c => schedaParte(c, c.applicata ? 'Applicata' : 'Da scegliere', c.applicata ? 'si' : 'no'));
+          });
         });
       }
       sezione('Pozioni e oro');
@@ -1474,7 +1479,7 @@ function vistaPartenza() {
       (r.combattimento.length ? '<div class="note">Tocca il candidato scelto; il materiale si sceglie solo se la classe impone una restrizione.</div>' : '') +
       '<h2>Oggetti vari</h2>' + r.vari.map((t, i) => cardTesoro(t, 'partenza', 'vari.' + i)).join('');
     if (r.extra.length) h += '<h2>Compensazioni</h2>' + r.extra.map((e, i) => e.tesoro ? '<div class="note">' + esc(e.motivo) + '</div>' + cardTesoro(e.tesoro, 'partenza', 'extra.' + i + '.tesoro') : '<div class="tes"><b>' + esc(e.motivo) + '</b><div class="txt">' + esc(e.scelta) + '</div></div>').join('');
-    if (r.parti.length) h += '<h2>Parti di potenziamento</h2><div class="note">Il giocatore applica le parti che vuole entro il tetto; quelle non applicate non si conservano. Spunta le parti applicate: il PDF le riporta per prime, con l\'effetto.</div>' +
+    if (r.parti.length) h += '<h2>Parti di potenziamento</h2><div class="note">Il giocatore applica le parti che vuole entro il tetto; quelle non applicate non si conservano. Nel PDF ci sono tutte, con l\'effetto e una casella da spuntare; quelle spuntate qui escono già segnate.</div>' +
       r.parti.map((p, pi) => '<div class="tes parti"><div class="top"><b>' + esc(p.oggetto) + '</b><span class="tag">' + esc(p.categoria) + '</span><span class="tag acc">tetto ' + p.tetto + '</span></div>' +
         p.gruppi.map((g, gi) => '<details' + det('parti.' + pi + '.' + gi, gi === 0) + '><summary>' + g.valore + ' · ' + g.parti.length + ' parti</summary>' +
           g.parti.map((c, ci) => '<div class="cap"><span class="row" style="gap:8px;flex-wrap:nowrap;min-width:0"><input type="checkbox" title="Applicata" aria-label="Applicata" style="width:20px;height:20px;accent-color:var(--accent);flex-shrink:0" data-chk="ultimo.partenza.parti.' + pi + '.gruppi.' + gi + '.parti.' + ci + '.applicata"' + (c.applicata ? ' checked' : '') + '>' +
