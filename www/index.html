@@ -1409,7 +1409,7 @@ function piede(k, res) {
     '<div class="tot"><span>Totale</span><b>' + fmt(t.mo) + (t.senza ? ' <small class="note">+ ' + t.senza + ' senza prezzo</small>' : '') + '</b></div>' +
     '<div class="azioni"><button class="btn" data-act="salva" data-k="' + k + '">' + (salvato ? 'Aggiorna nello storico' : 'Salva') + '</button>' +
     '<button class="btn" data-act="copia" data-k="' + k + '">Copia</button><button class="btn" data-act="condividi" data-k="' + k + '">Condividi</button>' +
-    '<button class="btn pri" data-act="pdf" data-k="' + k + '">PDF</button></div>' + (IN_PROVA ? '<div class="note">Nella pagina di prova il PDF non si può scaricare: si crea nell\'app Android e Windows.</div>' : '');
+    '<button class="btn pri" data-act="pdf" data-k="' + k + '">PDF</button></div>';
 }
 
 /* ---------- Tesoro ---------- */
@@ -1713,7 +1713,15 @@ async function creaPdf(k) {
     } catch (e) { if (!/cancel/i.test(String(e && (e.message || e)))) toast('PDF non salvato: ' + (e.message || e)); }
     return;
   }
-  if (IN_PROVA) { toast('Il PDF si crea nell\'app Android o Windows'); return; }
+  if (window.claude && window.claude.use) {           // pagina di prova su claude.ai: capability «downloads»
+    const dl = await window.claude.use('downloads');
+    if (dl) {
+      try { await dl.save({ filename: nome, data: doc.output('blob') }); toast('PDF salvato'); }
+      catch (e) { if (e && e.code !== 'declined') toast('PDF non salvato: ' + (e.message || e.code)); }
+      return;
+    }
+  }
+  if (IN_PROVA) { toast('Qui il PDF non si può scaricare: usa l\'app Android o Windows'); return; }
   doc.save(nome);
   toast('PDF creato: ' + nome);
 }
