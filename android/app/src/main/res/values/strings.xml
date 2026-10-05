@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tesori della Collana</string>
+    <string name="title_activity_main">Tesori della Collana</string>
+    <string name="package_name">it.collana.tesori</string>
+    <string name="custom_url_scheme">it.collana.tesori</string>
+</resources>

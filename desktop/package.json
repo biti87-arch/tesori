@@ -1,0 +1,21 @@
+{
+  "name": "tesori",
+  "productName": "Tesori della Collana",
+  "version": "1.0.0",
+  "description": "Tesori casuali, partenza e mercato del Manuale dei Tesori (Collana)",
+  "author": "Collana",
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "it.collana.tesori",
+    "productName": "Tesori della Collana",
+    "files": ["main.js", "icon.png", "www/**/*"],
+    "win": { "target": ["portable", "nsis"], "icon": "icon.png" },
+    "portable": { "artifactName": "Tesori-${version}-portatile.exe" },
+    "nsis": { "artifactName": "Tesori-${version}-installazione.exe", "oneClick": false, "allowToChangeInstallationDirectory": true },
+    "publish": null
+  }
+}
