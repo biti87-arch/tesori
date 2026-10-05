@@ -10,7 +10,7 @@ L'app non cambia il manuale: le correzioni per la v2.7.1 sono nella sezione E e 
 | Passo | Stato |
 |---|---|
 | 1. Analisi in chat: funzioni, schermate, algoritmi, punti da decidere (A–E) | ✅ confermato (05/10/2026) |
-| 2. Dati (`tesori_db_v1.1.json`, `incantesimi.json`), motore, pagina HTML (artifact da provare), test automatici | ⬜ |
+| 2. Dati (`tesori_db_v1.1.json`, `incantesimi.json`), motore, pagina HTML (artifact da provare), test automatici | 🔄 pagina pubblicata da provare (05/10/2026); test tutti superati |
 | 3. Versioni native: Capacitor (Android), Electron (Windows), workflow delle Releases | ⬜ |
 | 4. Chiusura: `claude/stato_lavori.md`, sezione K del design doc del database, zip dei sorgenti in chat | ⬜ |
 
@@ -155,6 +155,8 @@ N tesori (1–6) del grado scelto. «Parti di potenziamento» sì → C2 e nota 
 3. **Compensazioni:** niente armatura / niente scudo → +1 oggetto di grado L oppure (dall'8°, con una seconda arma) le parti per la seconda arma, a scelta; niente armi → +1 oggetto di grado L.
 4. **Parti (dal 4°):** per ogni oggetto sintonizzato, tetto T (4–8 +1, 9–11 +2, 12–14 +3, 15–16 +4, 17+ +5): 2 parti di +T, 4 di +(T−1), … fino a +1, senza doppioni nella stessa lista, raggruppate per valore.
 5. **Pozioni e oro:** 2 pozioni guaritrici (B10); oro «a cura del DM».
+
+Lettura applicata nell'app (da confermare in prova): la seconda arma dichiarata riceve le sue parti solo dall'8° livello (la Sintonia copre due armi); l'opzione «parti per una seconda arma» delle compensazioni compare solo dall'8° livello e con una sola arma dichiarata, e vale una volta sola anche se mancano sia armatura sia scudo.
 
 ### C8. Mercato
 Tipo di insediamento → numero di oggetti, speciali e offset; grado = PL − offset (minimo 1), abbassabile. k Oggetti vari dello stesso grado; pozioni, pergamene e speciali oltre il limite si ritirano; «50% di 1» con un d%. Promemoria del livello di incantesimi e pulsante «Pergamena» (B2). Accampamento: nessun oggetto.

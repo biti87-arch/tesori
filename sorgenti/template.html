@@ -1,0 +1,636 @@
+<title>Tesori della Collana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral+SC:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#ECEAE6; --surface:#F8F7F5; --surface2:#E0DCD5; --line:#CBC5BB;
+  --ink:#1E1C19; --muted:#655F56; --accent:#7A4E1D; --accent-ink:#FFFFFF;
+  --bronze:#8A6A2E; --cond:#C00000; --good:#2E6B4A; --warn:#9A5B12; --mark:#EFE3CF;
+  --t-head:#D4A84B; --t-line:#8B6914; --t-a:#F5EDD0; --t-b:#FAF3E0; --t-ink:#1E1C19;
+  --f-display:"Spectral SC", Georgia, "Times New Roman", serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171A; --surface:#1E2125; --surface2:#2A2E33; --line:#3A3F46;
+    --ink:#E9E6E1; --muted:#A39D94; --accent:#D9A15A; --accent-ink:#1A140C;
+    --bronze:#D0AE6B; --cond:#FF6B6B; --good:#7CC79B; --warn:#E3A55A; --mark:#3A2F20;
+    --t-head:#8B6914; --t-line:#6B5520; --t-a:#26231C; --t-b:#1F1D18; --t-ink:#E9E6E1; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171A; --surface:#1E2125; --surface2:#2A2E33; --line:#3A3F46;
+  --ink:#E9E6E1; --muted:#A39D94; --accent:#D9A15A; --accent-ink:#1A140C;
+  --bronze:#D0AE6B; --cond:#FF6B6B; --good:#7CC79B; --warn:#E3A55A; --mark:#3A2F20;
+  --t-head:#8B6914; --t-line:#6B5520; --t-a:#26231C; --t-b:#1F1D18; --t-ink:#E9E6E1; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;padding:0 16px calc(84px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:760px;margin:0 auto;min-width:0}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px 8px;border-bottom:1px solid var(--line)}
+h1{font-family:var(--f-display);font-weight:700;font-size:1.4rem;margin:0;letter-spacing:.02em}
+.hsub{color:var(--muted);font-size:.8rem;margin-top:2px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+nav.tabs button{display:grid;justify-items:center;gap:2px;padding:6px 2px;border:0;background:transparent;color:var(--muted);font:600 .72rem var(--f-body);cursor:pointer;border-radius:8px}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button[aria-selected="true"]{color:var(--accent);background:var(--mark)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section.panel{display:grid;gap:14px;padding-top:14px}
+h2{font-family:var(--f-display);font-weight:500;font-size:1.1rem;margin:0 0 8px;letter-spacing:.03em;color:var(--bronze)}
+h3{font-size:.95rem;margin:0}
+.label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.field{display:grid;gap:3px;min-width:0}
+.field select,.field input{width:100%;padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink);font:500 .95rem var(--f-body)}
+.grid2{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.card select,.card input:not([type=checkbox]),details select{padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink);font:500 .9rem var(--f-body);min-width:0;max-width:100%}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.check{display:flex;gap:8px;align-items:center;font-size:.9rem;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--accent);flex-shrink:0}
+.btn{padding:8px 12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;font:600 .85rem var(--f-body);cursor:pointer}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.big{width:100%;padding:12px;font-size:1rem}
+.btn.sm{padding:4px 9px;font-size:.8rem}
+.btn.ico{padding:4px 9px;font-size:1rem;line-height:1}
+.btn.danger{color:var(--cond);border-color:var(--cond)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.seg{display:flex;gap:4px}
+.seg button{flex:1;padding:8px 6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;font:600 .85rem var(--f-body);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-width:38px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font:600 .82rem var(--f-body);cursor:pointer;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.stepper{display:grid;grid-template-columns:44px 1fr 44px;gap:6px;align-items:center}
+.stepper b{text-align:center;font:600 1.4rem var(--f-mono)}
+.stepper button{height:40px;font-size:1.2rem}
+.tag{font:500 .7rem var(--f-mono);padding:2px 6px;border-radius:4px;background:var(--surface2);color:var(--muted);white-space:nowrap}
+.tag.acc{background:var(--accent);color:var(--accent-ink)}
+.tag.br{background:var(--bronze);color:var(--surface)}
+.tag.rar{background:transparent;border:1px solid var(--cond);color:var(--cond)}
+.res{display:grid;gap:8px}
+.tes{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:4px;min-width:0}
+.tes.pri{border-left:4px solid var(--accent)}
+.tes .top{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.tes .top .sp{flex:1}
+.nome{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.nome button{all:unset;cursor:pointer;font-weight:600;font-size:1rem;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;min-width:0;overflow-wrap:anywhere}
+.nome .pz{font:500 .9rem var(--f-mono);white-space:nowrap;color:var(--bronze)}
+.meta{font-size:.8rem;color:var(--muted)}
+.tiri{font:400 .7rem var(--f-mono);color:var(--muted);overflow-wrap:anywhere}
+.rit{font-size:.75rem;color:var(--muted);font-style:italic}
+.perg{display:grid;gap:4px;margin-top:4px;padding:6px 8px;border-radius:8px;background:var(--bg)}
+.perg .l{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font-size:.88rem;min-width:0}
+.perg .l>span{min-width:0;overflow-wrap:anywhere}
+.perg .lv{font:600 .8rem var(--f-mono);color:var(--bronze)}
+.perg .cd{display:block;font:500 .72rem var(--f-mono);color:var(--muted)}
+.perg select{padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:500 .82rem var(--f-body)}
+.tot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:var(--mark);font-weight:600}
+.tot b{font:600 1.05rem var(--f-mono)}
+.azioni{display:flex;gap:6px;flex-wrap:wrap}
+.azioni .btn{flex:1}
+.note{font-size:.82rem;color:var(--muted)}
+.txt{font-size:.9rem}
+.txt p{margin:4px 0}
+.cond{color:var(--cond);font-weight:600}
+.overlay{position:fixed;inset:0;background:rgba(8,12,18,.55);z-index:20;display:flex;justify-content:center;align-items:flex-end}
+.overlay .card{width:100%;max-width:760px;max-height:88vh;overflow:auto;border-radius:14px 14px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:10px}
+.sheetHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.sheetHead h3{font-family:var(--f-display);font-size:1.2rem;font-weight:700;color:var(--ink)}
+.orig{color:var(--muted);font-size:.85rem;font-style:italic}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px}
+.kv div{background:var(--bg);border-radius:8px;padding:6px 9px;min-width:0}
+.kv small{display:block;color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}
+.kv b{font:500 .9rem var(--f-body);overflow-wrap:anywhere}
+.manuale{font-size:.78rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px}
+.search{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit}
+details{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:8px 10px}
+details summary{cursor:pointer;font-weight:600;display:flex;justify-content:space-between;gap:8px;align-items:center;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"▸";color:var(--muted);font-weight:400}
+details[open] summary::after{content:"▾"}
+.hit{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:baseline;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;text-align:left;width:100%;color:var(--ink);font:inherit}
+.hit .g{font:600 .75rem var(--f-mono);color:var(--bronze);white-space:nowrap}
+.hit .p{font:500 .8rem var(--f-mono);color:var(--muted);white-space:nowrap}
+.tw{overflow-x:auto;border:1px solid var(--t-line);border-radius:6px}
+table.col{width:100%;border-collapse:collapse;font-size:.8rem;color:var(--t-ink)}
+table.col th{background:var(--t-head);color:#1E1C19;font-weight:700;text-align:left;padding:5px 6px;border:1px solid var(--t-line)}
+table.col td{padding:5px 6px;border:1px solid var(--t-line);vertical-align:top}
+table.col td:last-child,table.col td.lungo{min-width:180px}
+table.col tr:nth-child(odd) td{background:var(--t-a)}
+table.col tr:nth-child(even) td{background:var(--t-b)}
+table.col td.n{text-align:center;font-family:var(--f-mono);white-space:nowrap}
+table.col td.r{text-align:right;font-family:var(--f-mono);white-space:nowrap}
+.parti details{margin-top:6px}
+.cap{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:start;padding:4px 0;border-bottom:1px dashed var(--line);font-size:.88rem}
+.cap:last-child{border-bottom:0}
+.hist{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.hist input{width:100%;border:0;background:transparent;color:var(--ink);font:600 .95rem var(--f-body);padding:0}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:.85rem;z-index:30}
+.vuoto{color:var(--muted);text-align:center;padding:20px;font-size:.9rem}
+@media (prefers-reduced-motion: no-preference){.overlay .card{animation:up .18s ease-out}@keyframes up{from{transform:translateY(20px);opacity:.6}to{transform:none;opacity:1}}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <h1>Tesori della Collana</h1>
+  <div class="hsub" id="hdrSub">Manuale dei Tesori v2.7 · database v1.1</div>
+</header>
+<main id="main"></main>
+</div>
+<nav class="tabs" role="tablist" id="tabs"></nav>
+<div id="modal"></div>
+<div id="toast"></div>
+
+<script>
+const DB = __DATI__;
+const INC = __INC__;
+</script>
+<script>
+__MOTORE__
+</script>
+<script>
+'use strict';
+const m = Motore.crea(DB, INC);
+const S = DB.sottotabelle, RG = DB.regole;
+const GRADI = Motore.GRADI;
+const KEY = 'tesori_app_v1';
+
+/* ---------- utilità ---------- */
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const COND = ['Azzoppat[oaie]', 'Colt[oaie] alla sprovvista', 'Offuscat[oaie]', 'Sempre pront[oaie]', 'Affaticat[oaie]', 'Abbagliat[oaie]', 'Accecat[oaie]', 'Accovacciat[oaie]',
+  'Affascinat[oaie]', 'Assordat[oaie]', 'Barcollant[ei]', 'Confus[oaie]', 'Esaust[oaie]', 'Frastornat[oaie]', 'Immobilizzat[oaie]', 'Impreparat[oaie]', 'In lotta', 'Inabil[ei]',
+  'Incorpore[oaie]', 'Incorporei', 'Indifes[oaie]', 'Inferm[oaie]', 'Intralciat[oaie]', 'Invisibil[ei]', 'Morent[ei]', 'Mort[oaie]', 'Nauseat[oaie]', 'Paralizzat[oaie]',
+  'Scoss[oaie]', 'Spaventat[oaie]', 'In preda al panico', 'Pietrificat[oaie]', 'Priv[oaie] di sensi', 'Pron[oaie]', 'Rott[oaie]', 'Sanguinant[ei]', 'Scheggiat[oaie]',
+  'Stabilizzat[oaie]', 'Stordit[oaie]'];
+const COND_RE = new RegExp('(?<![\\p{L}])(' + COND.join('|') + ')(?![\\p{L}])', 'giu');
+const rich = s => esc(s).replace(COND_RE, x => '<span class="cond">' + x + '</span>');
+const fmt = m.fmt;
+const $ = s => document.querySelector(s);
+function toast(t) { const el = $('#toast'); el.innerHTML = '<div class="toast">' + esc(t) + '</div>'; clearTimeout(toast.t); toast.t = setTimeout(() => { el.innerHTML = ''; }, 1800); }
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const clone = o => JSON.parse(JSON.stringify(o));
+function get(o, path) { return path === '' ? o : path.split('.').reduce((a, k) => a == null ? a : a[k], o); }
+
+/* ---------- stato ---------- */
+let G = {
+  tab: 'tesoro',
+  tesoro: { modo: 'livello', livello: 5, grado: '5', quanti: 2, parti: true, armi: true },
+  partenza: { livello: 5, marzialista: false, armatura: { usa: true, categoria: 'media' }, scudo: { usa: false, tipi: ['leggero', 'pesante'] },
+    armi: [{ modo: 'vol3', categoria: 'guerra', tipo: 'mischia', distanza: false, tabella: 'Marzialista', nome: '' }], compensazioni: { armatura: 'oggetto', scudo: 'oggetto' }, secondaArmaDistanza: false },
+  mercato: { tipo: 'Città', livello: 5, grado: '' , pergLiv: 1 },
+  consulta: { q: '', grado: '', cat: '', sotto: '', pClasse: '', pLiv: '', capCat: 'Armatura', capVal: '+1', incClasse: 'Bardo', incLiv: '1' },
+  ultimo: { tesoro: null, partenza: null, mercato: null, perg: null },
+  storico: []
+};
+try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s) G = Object.assign(G, s, { consulta: Object.assign(G.consulta, s.consulta || {}) }); } catch (e) { /* senza archivio */ }
+function salvaStato() { try { localStorage.setItem(KEY, JSON.stringify(G)); } catch (e) { /* archivio pieno o non disponibile */ } }
+
+/* ---------- schede ---------- */
+const ICONE = {
+  tesoro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 10a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4"/><path d="M10 13h4v3h-4z"/></svg>',
+  partenza: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+  mercato: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9h16v2a3 3 0 0 1-5.3 2 3 3 0 0 1-5.4 0A3 3 0 0 1 4 11z"/><path d="M5 13v7h14v-7"/></svg>',
+  consulta: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><circle cx="12" cy="10" r="3"/><path d="M14.2 12.2 16 14"/></svg>',
+  storico: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></svg>'
+};
+const TABS = [['tesoro', 'Tesoro'], ['partenza', 'Partenza'], ['mercato', 'Mercato'], ['consulta', 'Consulta'], ['storico', 'Storico']];
+function renderTabs() {
+  $('#tabs').innerHTML = TABS.map(([k, t]) => '<button role="tab" data-tab="' + k + '" aria-selected="' + (G.tab === k) + '">' + ICONE[k] + '<span>' + t + '</span></button>').join('');
+}
+
+/* ---------- pezzi comuni ---------- */
+const gradoTag = g => '<span class="tag br">G' + esc(g) + '</span>';
+function opzioniClassi(R) {
+  const maxL = Math.max.apply(null, R.pergamene.lista.map(x => x.livello));
+  return m.CLASSI.filter(c => m.listaDi(c)[String(maxL)]).map(c => '<option' + (c === R.pergamene.classe ? ' selected' : '') + '>' + esc(c) + '</option>').join('');
+}
+function bloccoPergamene(R, k, path) {
+  const p = R.pergamene;
+  return '<div class="perg">' +
+    '<div class="row" style="justify-content:space-between"><span class="note">' + (p.colonna === '—' ? 'Livello ' + p.N + '°' : 'Livello massimo ' + p.N + '° · d20 colonna ' + esc(p.colonna)) + '</span>' +
+    '<select data-act="cc" data-k="' + k + '" data-p="' + path + '" aria-label="Classe">' + opzioniClassi(R) + '</select></div>' +
+    p.lista.map((x, i) => '<div class="l"><span class="lv">' + x.livello + '°</span><span>' + esc(x.incantesimo) +
+      '<span class="cd">CD ' + x.cd + ' · LI ' + x.li + ' · ' + fmt(x.prezzo) + '</span></span>' +
+      '<button class="btn ico" title="Ritira l\'incantesimo" data-act="ri" data-k="' + k + '" data-p="' + path + '" data-i="' + i + '">↻</button></div>').join('') +
+    '<div class="note">CD se l\'incantesimo concede un Tiro Salvezza.</div></div>';
+}
+function cardTesoro(t, k, path, opz) {
+  opz = opz || {};
+  const o = t.oggetto;
+  let top = '';
+  if (t.ruolo === 'primario') top += '<span class="tag acc">Primario</span>';
+  else if (t.ruolo === 'secondario') top += '<span class="tag">Secondario</span>';
+  top += gradoTag(t.grado);
+  let corpo;
+  if (t.tipo === 'parte') {
+    const p = t.parte;
+    top += '<span class="tag">Parte</span>';
+    corpo = '<div class="nome"><button data-act="cap" data-k="' + k + '" data-p="' + path + '.parte">' + esc(p.capacita) + '</button><span class="pz">' + esc(p.categoria) + ' ' + esc(p.valore) + '</span></div>' +
+      '<div class="meta">Capacità speciale da applicare a un oggetto sintonizzato (n° ' + p.n + ' di ' + p.totale + ')</div>';
+  } else {
+    top += '<span class="tag">Oggetto vario</span>';
+    if (o.speciale) top += '<span class="tag rar">Speciale</span>';
+    corpo = '<div class="nome"><button data-act="sk" data-k="' + k + '" data-p="' + path + '.oggetto">' + esc(o.nome) + '</button><span class="pz">' + (o.prezzo == null ? '—' : fmt(o.prezzo)) + '</span></div>' +
+      '<div class="meta">' + [o.categoria, o.slot].filter(Boolean).map(esc).join(' · ') + (o.prezzo_stimato ? ' · prezzo stimato' : '') + '</div>';
+    if (o.pergamene) corpo += bloccoPergamene(o, k, path + '.oggetto');
+    if (o.tintura) corpo += '<div class="note">Applicata a: <b>' + esc(o.tintura.bersaglio) + '</b> perfetto adatto al gruppo (+ oggetto perfetto: arma +300, armatura o scudo +150 mo, oltre al prezzo base).</div>';
+  }
+  if (t.forzato) top += '<span class="tag" title="Nota ¹ della composizione">nota ¹</span>';
+  top += '<span class="sp"></span>';
+  if (!opz.noRitira) top += '<button class="btn ico" title="Ritira" data-act="rt" data-k="' + k + '" data-p="' + path + '">↻</button>';
+  const tiri = (t.tiri || []).concat(o ? o.tiri : []);
+  const rit = o && o.ritirati && o.ritirati.length ? '<div class="rit">Ritirati: ' + o.ritirati.map(esc).join('; ') + '</div>' : '';
+  return '<div class="tes' + (t.ruolo === 'primario' ? ' pri' : '') + '"><div class="top">' + top + '</div>' + corpo + rit +
+    (tiri.length ? '<div class="tiri">' + tiri.map(esc).join(' · ') + '</div>' : '') + '</div>';
+}
+function piede(k, res) {
+  const t = m.totale(res);
+  const salvato = G.storico.some(h => h.id === res.id);
+  return '<div class="tot"><span>Totale</span><b>' + fmt(t.mo) + (t.senza ? ' <small class="note">+ ' + t.senza + ' senza prezzo</small>' : '') + '</b></div>' +
+    '<div class="azioni"><button class="btn" data-act="salva" data-k="' + k + '">' + (salvato ? 'Aggiorna nello storico' : 'Salva') + '</button>' +
+    '<button class="btn" data-act="copia" data-k="' + k + '">Copia</button><button class="btn" data-act="condividi" data-k="' + k + '">Condividi</button></div>';
+}
+
+/* ---------- Tesoro ---------- */
+function vistaTesoro() {
+  const T = G.tesoro, r = G.ultimo.tesoro;
+  let h = '<section class="panel"><div class="card" style="display:grid;gap:12px">' +
+    '<div class="seg"><button data-act="tmodo" data-v="livello" aria-pressed="' + (T.modo === 'livello') + '">Per livello</button><button data-act="tmodo" data-v="grado" aria-pressed="' + (T.modo === 'grado') + '">Per grado</button></div>';
+  if (T.modo === 'livello') {
+    h += '<div class="field"><span class="label">Livello del gruppo</span><div class="stepper"><button class="btn" data-act="tliv" data-v="-1" aria-label="Meno">−</button><b>' + T.livello + '</b><button class="btn" data-act="tliv" data-v="1" aria-label="Più">+</button></div></div>';
+  } else {
+    h += '<div class="grid2"><label class="field"><span class="label">Grado</span><select data-set="tesoro.grado">' + GRADI.map(g => '<option' + (g === T.grado ? ' selected' : '') + '>' + g + '</option>').join('') + '</select></label>' +
+      '<div class="field"><span class="label">Tesori</span><div class="chips">' + [1, 2, 3, 4, 5, 6].map(n => '<button class="chip" data-act="tquanti" data-v="' + n + '" aria-pressed="' + (T.quanti === n) + '">' + n + '</button>').join('') + '</div></div></div>' +
+      '<label class="check"><input type="checkbox" data-chk="tesoro.parti"' + (T.parti ? ' checked' : '') + '> Parti di potenziamento (composizione del tesoro)</label>' +
+      '<label class="check"><input type="checkbox" data-chk="tesoro.armi"' + (T.armi ? ' checked' : '') + '> Armi, armature e scudi fra gli oggetti vari</label>';
+  }
+  h += '<button class="btn pri big" data-act="tira">Tira</button></div>';
+  if (r) {
+    h += '<div class="res">';
+    if (r.modo === 'livello') h += '<div class="note">Livello ' + r.livello + ' · d20 = <b>' + r.tiro + '</b> → colonna ' + esc(r.colonna) + ': <b>' + r.gradi.join(' + ') + '</b></div>';
+    else h += '<div class="note">Grado ' + esc(r.grado) + ' × ' + r.quanti + (r.opz.parti ? ' · con parti' : ' · solo oggetti vari') + (r.opz.armi ? '' : ' · senza armi, armature e scudi') + '</div>';
+    h += r.tesori.map((t, i) => cardTesoro(t, 'tesoro', 'tesori.' + i)).join('') + piede('tesoro', r) + '</div>';
+  } else h += '<div class="vuoto">Scegli il livello o il grado e premi «Tira».</div>';
+  return h + '</section>';
+}
+
+/* ---------- Partenza ---------- */
+function vistaPartenza() {
+  const P = G.partenza, r = G.ultimo.partenza, L = P.livello;
+  const secondaPossibile = L >= 8 && P.armi.length === 1;
+  const usaArm = P.marzialista || P.armatura.usa;
+  let h = '<section class="panel"><div class="card" style="display:grid;gap:12px">' +
+    '<div class="field"><span class="label">Livello del personaggio</span><div class="stepper"><button class="btn" data-act="pliv" data-v="-1">−</button><b>' + L + '</b><button class="btn" data-act="pliv" data-v="1">+</button></div></div>' +
+    '<label class="check"><input type="checkbox" data-chk="partenza.marzialista"' + (P.marzialista ? ' checked' : '') + '> Marzialista (Bracciali dell\'armatura +' + Math.max(1, m.tetto(L)) + ')</label>';
+  if (!P.marzialista) h += '<div class="grid2"><label class="check"><input type="checkbox" data-chk="partenza.armatura.usa"' + (P.armatura.usa ? ' checked' : '') + '> Armatura</label>' +
+    (P.armatura.usa ? '<select data-set="partenza.armatura.categoria" class="field" style="padding:6px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink)">' + ['leggera', 'media', 'pesante'].map(c => '<option' + (c === P.armatura.categoria ? ' selected' : '') + '>' + c + '</option>').join('') + '</select>' : '<span></span>') + '</div>';
+  h += '<label class="check"><input type="checkbox" data-chk="partenza.scudo.usa"' + (P.scudo.usa ? ' checked' : '') + '> Scudo</label>';
+  if (P.scudo.usa) h += '<div class="chips">' + ['piccolo', 'leggero', 'pesante', 'torre'].map(t => '<button class="chip" data-act="ptipo" data-v="' + t + '" aria-pressed="' + P.scudo.tipi.includes(t) + '">' + t + '</button>').join('') + '</div>';
+  h += '<div class="field"><span class="label">Armi</span>' + P.armi.map((a, i) => '<div class="card" style="padding:10px;display:grid;gap:8px">' +
+      '<div class="row" style="justify-content:space-between"><b>Arma ' + (i + 1) + '</b><button class="btn sm danger" data-act="parmadel" data-i="' + i + '">Togli</button></div>' +
+      '<div class="seg">' + [['vol3', 'Vol. 3'], ['classe', 'Tabella di classe'], ['libera', 'Altra']].map(([v, t]) => '<button data-act="pamodo" data-i="' + i + '" data-v="' + v + '" aria-pressed="' + (a.modo === v) + '">' + t + '</button>').join('') + '</div>' +
+      (a.modo === 'vol3' ? '<div class="grid2"><select data-set="partenza.armi.' + i + '.categoria"><option value="semplice"' + (a.categoria === 'semplice' ? ' selected' : '') + '>semplice</option><option value="guerra"' + (a.categoria === 'guerra' ? ' selected' : '') + '>da guerra</option></select>' +
+        '<select data-set="partenza.armi.' + i + '.tipo"><option value="mischia"' + (a.tipo === 'mischia' ? ' selected' : '') + '>da mischia</option><option value="tiro"' + (a.tipo === 'tiro' ? ' selected' : '') + '>da tiro</option></select></div>' : '') +
+      (a.modo === 'classe' ? '<select data-set="partenza.armi.' + i + '.tabella">' + ['Marzialista', 'Druido e Morfico'].map(t => '<option' + (t === a.tabella ? ' selected' : '') + '>' + t + '</option>').join('') + '</select>' : '') +
+      (a.modo === 'libera' ? '<input data-set="partenza.armi.' + i + '.nome" placeholder="es. arma da fuoco, esotica…" value="' + esc(a.nome) + '" style="padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink)">' : '') +
+      (a.modo !== 'vol3' ? '<label class="check"><input type="checkbox" data-chk="partenza.armi.' + i + '.distanza"' + (a.distanza ? ' checked' : '') + '> Arma a distanza (per le parti)</label>' : '') +
+      '</div>').join('') + (P.armi.length < 2 ? '<button class="btn sm" data-act="parmaadd">+ Aggiungi un\'arma</button>' : '') + '</div>';
+  const comp = [];
+  if (!usaArm) comp.push(['armatura', 'Niente armatura']);
+  if (!P.scudo.usa) comp.push(['scudo', 'Niente scudo']);
+  if (comp.length) h += '<div class="field"><span class="label">Compensazioni</span>' + comp.map(([k, t]) => '<label class="field"><span class="note">' + t + '</span><select data-set="partenza.compensazioni.' + k + '"><option value="oggetto"' + (P.compensazioni[k] !== 'parti' ? ' selected' : '') + '>un oggetto in più di grado ' + L + '</option>' +
+    (secondaPossibile ? '<option value="parti"' + (P.compensazioni[k] === 'parti' ? ' selected' : '') + '>parti per una seconda arma</option>' : '') + '</select></label>').join('') +
+    (secondaPossibile && Object.values(P.compensazioni).includes('parti') ? '<label class="check"><input type="checkbox" data-chk="partenza.secondaArmaDistanza"' + (P.secondaArmaDistanza ? ' checked' : '') + '> Seconda arma a distanza</label>' : '') +
+    (!secondaPossibile ? '<div class="note">Le parti per una seconda arma sono possibili dall\'8° livello, con una sola arma dichiarata.</div>' : '') + '</div>';
+  if (!P.armi.length) h += '<div class="note">Niente armi: un oggetto in più di grado ' + L + '.</div>';
+  h += '<button class="btn pri big" data-act="genera">Genera l\'equipaggiamento</button></div>';
+  if (L < 2) h += '<div class="note">Il 1° livello segue le regole del Volume 1.</div>';
+  if (r) {
+    h += '<div class="res"><h2>Combattimento</h2>' + r.combattimento.map(c => '<div class="tes"><div class="top"><b>' + esc(c.voce) + '</b></div><div class="txt">' + c.candidati.map(esc).join(' <span class="note">oppure</span> ') + '</div>' + (c.nota ? '<div class="note">' + esc(c.nota) + '</div>' : '') + '</div>').join('') +
+      (r.combattimento.length ? '' : '<div class="note">Nessun equipaggiamento da combattimento.</div>') +
+      (r.combattimento.length ? '<div class="note">Si sceglie uno dei due candidati; il materiale solo se la classe impone una restrizione.</div>' : '') +
+      '<h2>Oggetti vari</h2>' + r.vari.map((t, i) => cardTesoro(t, 'partenza', 'vari.' + i)).join('');
+    if (r.extra.length) h += '<h2>Compensazioni</h2>' + r.extra.map((e, i) => e.tesoro ? '<div class="note">' + esc(e.motivo) + '</div>' + cardTesoro(e.tesoro, 'partenza', 'extra.' + i + '.tesoro') : '<div class="tes"><b>' + esc(e.motivo) + '</b><div class="txt">' + esc(e.scelta) + '</div></div>').join('');
+    if (r.parti.length) h += '<h2>Parti di potenziamento</h2><div class="note">Il giocatore applica le parti che vuole entro il tetto; quelle non applicate non si conservano.</div>' +
+      r.parti.map((p, pi) => '<div class="tes parti"><div class="top"><b>' + esc(p.oggetto) + '</b><span class="tag">' + esc(p.categoria) + '</span><span class="tag acc">tetto ' + p.tetto + '</span></div>' +
+        p.gruppi.map((g, gi) => '<details' + det('parti.' + pi + '.' + gi, gi === 0) + '><summary>' + g.valore + ' · ' + g.parti.length + ' parti</summary>' +
+          g.parti.map((c, ci) => '<div class="cap"><button style="all:unset;cursor:pointer" data-act="cap" data-k="partenza" data-p="parti.' + pi + '.gruppi.' + gi + '.parti.' + ci + '"><b>' + esc(c.capacita) + '</b></button>' +
+            '<button class="btn ico" data-act="rp" data-k="partenza" data-p="parti.' + pi + '.gruppi.' + gi + '" data-i="' + ci + '">↻</button></div>').join('') + '</details>').join('') + '</div>').join('');
+    else if (r.livello < 4) h += '<div class="note">Parti di potenziamento dal 4° livello.</div>';
+    h += '<h2>Pozioni e oro</h2><div class="tes">' + r.pozioni.map(p => '<div class="nome"><span>' + esc(p.nome) + '</span><span class="pz">' + fmt(p.prezzo) + '</span></div>').join('') + '<div class="note">Oro: a cura del DM.</div></div>' + piede('partenza', r) + '</div>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- Mercato ---------- */
+function vistaMercato() {
+  const Mk = G.mercato, r = G.ultimo.mercato;
+  const info = m.infoInsediamento(Mk.tipo), gmax = m.gradoMercato(Mk.tipo, Mk.livello);
+  let h = '<section class="panel"><div class="card" style="display:grid;gap:12px">' +
+    '<div class="grid2"><label class="field"><span class="label">Insediamento</span><select data-set="mercato.tipo">' + RG.disponibilita_mercanti.map(x => '<option' + (x.tipo === Mk.tipo ? ' selected' : '') + '>' + esc(x.tipo) + '</option>').join('') + '</select></label>' +
+    '<div class="field"><span class="label">Livello del gruppo</span><div class="stepper"><button class="btn" data-act="mliv" data-v="-1">−</button><b>' + Mk.livello + '</b><button class="btn" data-act="mliv" data-v="1">+</button></div></div></div>' +
+    '<div class="kv"><div><small>Abitanti</small><b>' + esc(info.riga.abitanti) + '</b></div><div><small>Oggetti</small><b>' + esc(info.riga.oggetti_disponibili) + '</b></div><div><small>Livello oggetti</small><b>' + esc(info.riga.livello_massimo_oggetti) + '</b></div><div><small>Incantesimi</small><b>' + esc(info.riga.livello_incantesimi) + '</b></div></div>';
+  if (gmax !== null) {
+    const opts = []; for (let g = gmax; g >= 1; g--) opts.push(String(g));
+    h += '<label class="field"><span class="label">Grado degli oggetti</span><select data-set="mercato.grado">' + opts.map(g => '<option value="' + g + '"' + (String(Mk.grado || gmax) === g ? ' selected' : '') + '>' + g + (g === String(gmax) ? ' (massimo)' : '') + '</option>').join('') + '</select></label>' +
+      '<button class="btn pri big" data-act="mgen">Genera la disponibilità</button>';
+  } else h += '<div class="note">Nessun oggetto disponibile in un accampamento.</div>';
+  h += '</div>';
+  if (r && r.tipo === Mk.tipo) {
+    h += '<div class="res"><div class="note">' + esc(r.tipo) + ', livello ' + r.livello + ' · grado ' + esc(r.grado) + ' · speciali ammessi: ' + (r.maxSpeciali || 0) + '</div>' +
+      r.oggetti.map((t, i) => cardTesoro(t, 'mercato', 'oggetti.' + i)).join('') + piede('mercato', r) + '</div>';
+  }
+  const incMax = info.incantesimi;
+  h += '<div class="card" style="display:grid;gap:10px"><h2>Templi e accademie</h2>';
+  if (incMax && incMax >= 1) {
+    const liv = Math.min(+Mk.pergLiv || 1, incMax);
+    h += '<div class="note">Pergamene e pozioni fino al ' + incMax + '° livello di incantesimo.</div><div class="row"><select data-set="mercato.pergLiv">' + Array.from({ length: incMax }, (_, i) => i + 1).map(l => '<option value="' + l + '"' + (l === liv ? ' selected' : '') + '>' + l + '° livello</option>').join('') + '</select>' +
+      '<button class="btn" data-act="mperg">Pergamena</button></div>';
+    const pp = (G.ultimo.mercatoPerg || []);
+    h += pp.map((R, i) => '<div class="tes"><div class="nome"><span><b>' + esc(R.nome) + '</b></span><span class="pz">' + fmt(R.prezzo) + '</span></div>' + bloccoPergamene(R, 'mercatoPerg', String(i)) + '</div>').join('');
+    if (pp.length) h += '<button class="btn sm" data-act="mpergclr">Svuota</button>';
+  } else h += '<div class="note">In questo insediamento non si trovano pergamene.</div>';
+  return h + '</div></section>';
+}
+
+/* ---------- Consulta ---------- */
+/* stato aperto/chiuso delle sezioni a scomparsa, conservato fra un render e l'altro */
+const APERTI = {};
+const det = (k, def) => ' data-det="' + k + '"' + ((k in APERTI ? APERTI[k] : def) ? ' open' : '');
+document.addEventListener('toggle', ev => { const d = ev.target; if (d.dataset && d.dataset.det) APERTI[d.dataset.det] = d.open; }, true);
+let INDICE = null;
+function costruisciIndice() {
+  INDICE = DB.oggetti.map(o => ({ o, t: (o.nome_italiano + ' ' + o.nome_tabella + ' ' + o.nome_originale).toLowerCase() }));
+}
+const CATEGORIE = Array.from(new Set(DB.oggetti.map(o => o.categoria))).sort((a, b) => a.localeCompare(b, 'it'));
+const SOTTO = [['veleni', 'Veleni'], ['tinture', 'Tinture alchemiche'], ['pietre', 'Pietre ioun'], ['gioielli', 'Gioielli alchemici'], ['alchemiche', 'Sotto-tabelle alchemiche'],
+  ['verghe', 'Verghe metamagiche'], ['cristalli', 'Cristalli di potenziamento'], ['bastoni', 'Bastoni arcani'], ['capacita', 'Capacità speciali'], ['set', 'Bonus di set'],
+  ['generazione', 'Generazione difensivi e potenziamento'], ['incantesimi', 'Liste degli incantesimi'], ['pergamene', 'Pergamene per grado']];
+function tabella(intest, righe, cls) {
+  return '<div class="tw"><table class="col"><tr>' + intest.map(t => '<th>' + esc(t) + '</th>').join('') + '</tr>' +
+    righe.map(r => '<tr>' + r.map((c, i) => '<td' + (cls && cls[i] ? ' class="' + cls[i] + '"' : '') + '>' + (typeof c === 'number' ? fmt(c).replace(' mo', '') : rich(c)) + '</td>').join('') + '</tr>').join('') + '</table></div>';
+}
+function vistaSotto(k) {
+  const C = G.consulta;
+  switch (k) {
+    case 'veleni': return tabella(['N', 'Veleno', 'Liv./pot.', 'TS', 'Effetto', 'mo', 'Grado'], S.veleni.map(v => [String(v.n), v.veleno + (v.rarita ? ' (' + v.rarita + ')' : ''), v.livello + '/' + v.potenza, v.ts, v.effetto, v.prezzo, v.grado]), ['n', '', 'n', '', '', 'r', 'n']);
+    case 'tinture': return tabella(['N', 'Tintura', 'Bersaglio', 'mo', 'Grado', 'Effetto'], S.tinture.map(v => [String(v.n), v.tintura, v.bersaglio, v.prezzo, v.grado || '—', v.effetto]), ['n', '', '', 'r', 'n', '']);
+    case 'pietre': return tabella(['Grado', 'N', 'Pietra', 'Variante', 'mo', 'Effetto'], S.pietre_ioun.map(v => [v.grado, String(v.n), v.pietra, v.variante, v.prezzo, v.effetto]), ['n', 'n', '', '', 'r', '']);
+    case 'gioielli': return tabella(['Tipo', 'N', 'Pietra', 'mo', 'CD / ore', 'Effetto'], S.gioielli.map(v => [v.tipo, String(v.n), v.pietra, v.prezzo, v.cd_ore, v.effetto]), ['', 'n', '', 'r', 'n', '']);
+    case 'alchemiche': return tabella(['Tabella', 'N', 'Oggetto', 'mo', 'Grado', 'Effetto'], S.alchemiche.map(v => [v.tabella, String(v.n), v.oggetto + (v.rarita ? ' (' + v.rarita + ')' : ''), v.prezzo, v.grado || '—', v.effetto_breve || v.effetto]), ['', 'n', '', 'r', 'n', '']);
+    case 'verghe': return tabella(['Verga', 'Tiro', 'Talento', 'Minore', 'Normale', 'Superiore'], S.verghe_metamagiche.map(v => [v.verga, String(v.tiro), v.talento, v.prezzo_minore, v.prezzo_normale, v.prezzo_superiore]), ['n', 'n', '', 'r', 'r', 'r']);
+    case 'cristalli': return tabella(['Grado', 'd%', 'Cristallo', 'Tipo', 'mo'], S.cristalli_tabelle.map(v => [v.grado, v.tiro, v.cristallo, v.tipo, v.prezzo]), ['n', 'n', '', '', 'r']) +
+      '<h3 style="margin-top:10px">Famiglie</h3>' + tabella(['Famiglia', 'Tipo e prezzi', 'Effetto'], S.cristalli_famiglie.map(v => [v.famiglia, v.tipo_e_prezzi, v.effetto]));
+    case 'bastoni': return tabella(['N', 'Bastone', 'Energia', 'Incantesimi'], S.bastoni_arcani_base.map(v => [String(v.n), v.bastone, v.energia, v.incantesimi]), ['n', '', '', '']) +
+      '<h3 style="margin-top:10px">Superiori</h3>' + tabella(['Grado', 'Incantesimo massimo', 'mo'], S.bastoni_arcani_superiori.map(v => [v.grado, v.incantesimo_massimo, v.prezzo]), ['n', 'n', 'r']);
+    case 'capacita': {
+      const l = m.capacita[C.capCat + '|' + C.capVal] || [];
+      return '<div class="grid2"><select data-set="consulta.capCat">' + ['Armatura', 'Scudo', 'Arma da mischia', 'Arma a distanza'].map(c => '<option' + (c === C.capCat ? ' selected' : '') + '>' + c + '</option>').join('') + '</select>' +
+        '<select data-set="consulta.capVal">' + ['+1', '+2', '+3', '+4', '+5'].map(c => '<option' + (c === C.capVal ? ' selected' : '') + '>' + c + '</option>').join('') + '</select></div>' +
+        tabella(['N', 'Capacità', 'Effetto'], l.map(c => [String(c.n), c.capacita, c.effetto]), ['n', '', '']);
+    }
+    case 'set': return S.bonus_set.map(s => '<details><summary>' + esc(s.set) + '</summary><div class="txt">' + setHtml(s) + '</div></details>').join('');
+    case 'generazione': return tabella(['Tipo', 'Grado', 'Esito'], S.generazione.righe.map(v => [v.tipo, v.grado, v.esito]), ['', 'n', '']) +
+      '<div class="note" style="margin-top:6px">' + S.generazione.note_difensivi.concat(S.generazione.note_potenziamento).map(esc).join('<br>') + '</div>';
+    case 'incantesimi': {
+      const lista = m.listaDi(C.incClasse) || {};
+      const livs = Object.keys(lista);
+      const liv = livs.includes(C.incLiv) ? C.incLiv : livs[0];
+      return '<div class="grid2"><select data-set="consulta.incClasse">' + m.CLASSI.map(c => '<option' + (c === C.incClasse ? ' selected' : '') + '>' + c + '</option>').join('') + '</select>' +
+        '<select data-set="consulta.incLiv">' + livs.map(l => '<option value="' + l + '"' + (l === liv ? ' selected' : '') + '>' + l + '° livello (' + lista[l].length + ')</option>').join('') + '</select></div>' +
+        (INC.alias[C.incClasse] ? '<div class="note">Usa la lista ' + (INC.alias[C.incClasse] === 'Stregone' ? 'dello Stregone' : 'del Sacerdote') + '.</div>' : '') +
+        tabella(['N', 'Incantesimo'], (lista[liv] || []).map((x, i) => [String(i + 1), x]), ['n', '']);
+    }
+    case 'pergamene': {
+      const P = S.pergamene;
+      return tabella(['Liv.', 'LI', 'Prezzo', 'CD'], Object.entries(INC.pergamene).map(([l, x]) => [l + '°', String(x.li), x.prezzo, String(x.cd)]), ['n', 'n', 'r', 'n']) +
+        '<h3 style="margin-top:10px">Livello massimo per grado</h3>' + tabella(['Grado', 'N'], GRADI.map(g => [g, P.livello_massimo[g] + '°']), ['n', 'n']) +
+        '<h3 style="margin-top:10px">1d20: numero e livelli</h3>' + tabella(['d20', 'Pergamene'], P.tiro_1d20.map(c => [c.tiro, c.scarti.map(s => s === 0 ? 'N' : 'N' + s).join(' + ')]), ['n', '']) +
+        '<div class="note">' + esc(P.nota) + '</div>';
+    }
+  }
+  return '';
+}
+function vistaConsulta() {
+  const C = G.consulta;
+  if (!INDICE) costruisciIndice();
+  const q = C.q.trim().toLowerCase();
+  let h = '<section class="panel"><div class="card" style="display:grid;gap:10px"><input class="search" type="search" placeholder="Cerca un oggetto" data-set="consulta.q" value="' + esc(C.q) + '">' +
+    '<div class="grid2"><select data-set="consulta.grado"><option value="">Tutti i gradi</option>' + GRADI.map(g => '<option' + (g === C.grado ? ' selected' : '') + '>' + g + '</option>').join('') + '</select>' +
+    '<select data-set="consulta.cat"><option value="">Tutte le categorie</option>' + CATEGORIE.map(c => '<option' + (c === C.cat ? ' selected' : '') + '>' + esc(c) + '</option>').join('') + '</select></div></div>';
+  if (q.length >= 2 || C.grado || C.cat) {
+    const tutti = INDICE.filter(x => (!q || x.t.includes(q)) && (!C.grado || x.o.grado === C.grado) && (!C.cat || x.o.categoria === C.cat));
+    const max = consultaMax;
+    h += '<div class="note">' + tutti.length + ' righe</div><div class="res">' + tutti.slice(0, max).map(x => '<button class="hit" data-act="riga" data-id="' + x.o.id_riga + '"><span class="g">G' + esc(x.o.grado) + ' #' + x.o.n + '</span><span>' + esc(x.o.nome_italiano) + '</span><span class="p">' + (x.o.prezzo == null ? '' : fmt(x.o.prezzo)) + '</span></button>').join('') + '</div>' +
+      (tutti.length > max ? '<button class="btn" data-act="altri">Mostra altri ' + Math.min(80, tutti.length - max) + '</button>' : '');
+  }
+  // generatore di pergamene
+  h += '<details' + det('perg', !!(G.ultimo.perg && G.ultimo.perg.length)) + '><summary>Generatore di pergamene</summary><div style="display:grid;gap:8px;margin-top:8px"><div class="grid2">' +
+    '<select data-set="consulta.pClasse"><option value="">Classe casuale</option>' + m.CLASSI.map(c => '<option' + (c === C.pClasse ? ' selected' : '') + '>' + c + '</option>').join('') + '</select>' +
+    '<select data-set="consulta.pLiv"><option value="">Livello casuale</option>' + [1, 2, 3, 4, 5, 6, 7, 8, 9].map(l => '<option value="' + l + '"' + (String(l) === C.pLiv ? ' selected' : '') + '>' + l + '° livello</option>').join('') + '</select></div>' +
+    '<button class="btn pri" data-act="pgen">Genera una pergamena</button>' +
+    (G.ultimo.perg || []).map((R, i) => '<div class="tes"><div class="nome"><span><b>' + esc(R.nome) + '</b></span><span class="pz">' + fmt(R.prezzo) + '</span></div>' + bloccoPergamene(R, 'perg', String(i)) + '</div>').join('') +
+    ((G.ultimo.perg || []).length ? '<button class="btn sm" data-act="pclr">Svuota</button>' : '') + '</div></details>';
+  // sotto-tabelle
+  h += '<details' + det('sotto', !!C.sotto) + '><summary>Sotto-tabelle e liste</summary><div style="display:grid;gap:8px;margin-top:8px"><select data-set="consulta.sotto"><option value="">Scegli…</option>' +
+    SOTTO.map(([k, t]) => '<option value="' + k + '"' + (k === C.sotto ? ' selected' : '') + '>' + t + '</option>').join('') + '</select>' + (C.sotto ? vistaSotto(C.sotto) : '') + '</div></details>';
+  return h + '</section>';
+}
+let consultaMax = 60;
+let confermaSvuota = false;
+
+/* ---------- Storico ---------- */
+function sintesi(h) {
+  const r = h.res;
+  if (r.modo === 'livello') return 'Tesoro · livello ' + r.livello + ' · ' + r.gradi.join('+');
+  if (r.modo === 'grado') return 'Tesoro · grado ' + r.grado + ' × ' + r.quanti;
+  if (r.modo === 'partenza') return 'Partenza · ' + r.livello + '° livello';
+  if (r.modo === 'mercato') return 'Mercato · ' + r.tipo + ' · grado ' + r.grado;
+  return '';
+}
+function vistaStorico() {
+  let h = '<section class="panel">';
+  if (!G.storico.length) return h + '<div class="vuoto">Nessun risultato salvato. Usa «Salva» sotto un tesoro, un equipaggiamento o un mercato.</div></section>';
+  h += G.storico.map((s, i) => '<div class="hist"><div style="min-width:0"><input data-hist="' + i + '" value="' + esc(s.etichetta) + '" aria-label="Etichetta">' +
+    '<div class="note">' + esc(sintesi(s)) + ' · ' + fmt(m.totale(s.res).mo) + ' · ' + new Date(s.data).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' }) + '</div></div>' +
+    '<div class="row"><button class="btn sm" data-act="hapri" data-i="' + i + '">Apri</button><button class="btn sm danger" data-act="hdel" data-i="' + i + '">✕</button></div></div>').join('') +
+    '<button class="btn danger" data-act="hclr">' + (confermaSvuota ? 'Tocca di nuovo per svuotare' : 'Svuota lo storico') + '</button>';
+  return h + '</section>';
+}
+
+/* ---------- scheda dell'oggetto ---------- */
+function setHtml(s) {
+  return '<div class="note">' + esc(s.originale) + '</div><b>Pezzi</b><ul style="margin:4px 0 6px;padding-left:18px">' +
+    s.pezzi.map(p => '<li>' + esc(p.pezzo) + ' <span class="note">(' + p.righe.map(r => { const o = m.perId[r]; return o ? 'G' + o.grado + ' #' + o.n : r; }).join(', ') + ')</span></li>').join('') + '</ul>' +
+    '<b>Bonus</b>' + s.bonus.map(b => '<p>' + b.pezzi + ' pezzi: ' + rich(b.bonus) + '</p>').join('') + (s.note ? '<p class="note">' + esc(s.note) + '</p>' : '');
+}
+function scheda(R) {
+  const riga = m.perId[R.id_riga];
+  let h = '<div class="sheetHead"><div><h3>' + esc(R.nome) + '</h3>' + (R.nome_originale ? '<div class="orig">' + esc(R.nome_originale) + '</div>' : '') + '</div><button class="btn ico" data-act="chiudi" aria-label="Chiudi">✕</button></div>';
+  h += '<div class="kv"><div><small>Grado · n°</small><b>G' + esc(R.grado) + ' #' + R.n + '</b></div><div><small>Categoria</small><b>' + esc(R.categoria || '—') + '</b></div>' +
+    '<div><small>Slot / tipo</small><b>' + esc(R.slot || 'Senza slot') + '</b></div><div><small>Prezzo</small><b>' + (R.prezzo == null ? '—' : (R.prezzo_stimato ? '≈ ' : '') + fmt(R.prezzo)) + '</b></div></div>';
+  if (R.prezzo_testo) h += '<div class="note">' + esc(R.prezzo_testo) + '</div>';
+  if (R.speciale) h += '<div><span class="tag rar">Oggetto speciale</span> <span class="note">solo nel tesoro primario</span></div>';
+  if (R.effetto) h += '<div class="txt">' + R.effetto.split('\n').map(p => '<p>' + rich(p) + '</p>').join('') + '</div>';
+  if (R.pergamene) h += '<div class="txt">' + R.pergamene.lista.map(x => '<p><b>' + x.livello + '°</b> ' + esc(x.incantesimo) + ' <span class="note">CD ' + x.cd + ' · LI ' + x.li + ' · ' + fmt(x.prezzo) + '</span></p>').join('') + '<p class="note">Lista: ' + esc(R.pergamene.classe) + '. CD se l\'incantesimo concede un Tiro Salvezza.</p></div>';
+  if (R.tintura) h += '<div class="note">Applicata a: ' + esc(R.tintura.bersaglio) + ' perfetto adatto al gruppo.</div>';
+  if (!R.effetto && !R.pergamene && riga && riga.rimando) h += '<div class="txt"><p>' + esc(riga.rimando) + '</p></div>';
+  if (R.nota) h += R.stato_nota === 'superata' ? '<details><summary>Nota (*) — superata: vale l\'effetto</summary><div class="txt"><p>' + rich(R.nota) + '</p></div></details>' : '<div class="txt"><p><b>Nota (*)</b> ' + rich(R.nota) + '</p></div>';
+  if (R.set && m.setPer[R.set]) h += '<details open><summary>Set: ' + esc(R.set) + '</summary><div class="txt">' + setHtml(m.setPer[R.set]) + '</div></details>';
+  if (riga) {
+    const diverso = riga.nome_tabella !== R.nome;
+    h += '<div class="manuale">Riga del manuale: G' + esc(riga.grado) + ' #' + riga.n + (diverso ? ' «' + esc(riga.nome_tabella) + '»' : '') +
+      (riga.segnalazioni ? ' · segnalazione ' + esc(riga.segnalazioni) : '') + (riga.origine ? ' · origine ' + esc(riga.origine) : '') + (riga.fuori_fascia ? ' · fuori fascia' : '') + '</div>';
+  }
+  return h;
+}
+function schedaCapacita(c) {
+  return '<div class="sheetHead"><div><h3>' + esc(c.capacita) + '</h3><div class="orig">' + esc(c.categoria) + ' ' + esc(c.valore) + ' · n° ' + c.n + (c.totale ? ' di ' + c.totale : '') + '</div></div><button class="btn ico" data-act="chiudi">✕</button></div>' +
+    '<div class="txt"><p>' + rich(c.effetto) + '</p></div><div class="note">Si applica a un oggetto sintonizzato: la somma dei valori delle capacità applicate non può superare il bonus di potenziamento raggiunto. Se è incompatibile o un doppione, si ritira.</div>';
+}
+function apriModale(html) { $('#modal').innerHTML = '<div class="overlay" data-act="chiudiFuori"><div class="card" role="dialog" aria-modal="true">' + html + '</div></div>'; }
+function chiudiModale() { $('#modal').innerHTML = ''; }
+function rigaComeOggetto(riga) {
+  const R = { id_riga: riga.id_riga, grado: riga.grado, n: riga.n, nome: riga.nome_italiano, nome_originale: riga.nome_originale, categoria: riga.categoria, slot: riga.slot,
+    prezzo: riga.prezzo, prezzo_stimato: riga.prezzo_stimato, prezzo_testo: riga.prezzo_variabile, effetto: riga.effetto, nota: riga.nota, stato_nota: riga.stato_nota, set: riga.set,
+    speciale: m.eSpeciale(riga, null) };
+  return R;
+}
+
+/* ---------- render ---------- */
+let inRender = false;
+function render() {
+  if (inRender) return;
+  inRender = true;
+  try { renderInterno(); } finally { inRender = false; }
+}
+function renderInterno() {
+  renderTabs();
+  const v = { tesoro: vistaTesoro, partenza: vistaPartenza, mercato: vistaMercato, consulta: vistaConsulta, storico: vistaStorico }[G.tab];
+  $('#main').innerHTML = v();
+  salvaStato();
+}
+
+/* ---------- azioni ---------- */
+function opzRitiro(k, res, path) {
+  if (k === 'tesoro') return { armi: res.opz && res.opz.armi === false ? false : true };
+  if (k === 'mercato') {
+    const idx = +path.split('.')[1];
+    const altri = res.oggetti.filter((t, i) => i !== idx && t.oggetto.speciale).length;
+    return { mercato: true, noSpeciali: altri >= (res.maxSpeciali || 0) };
+  }
+  return {};
+}
+function nuovoRisultato(k, res) { res.id = uid(); G.ultimo[k] = res; }
+async function copia(testo) {
+  try { await navigator.clipboard.writeText(testo); toast('Copiato'); }
+  catch (e) { const t = document.createElement('textarea'); t.value = testo; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); toast('Copiato'); } catch (e2) { toast('Copia non riuscita'); } t.remove(); }
+}
+async function condividi(testo) {
+  const cap = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share;
+  if (cap) { try { await cap.share({ title: 'Tesori', text: testo }); return; } catch (e) { if (e && /cancel/i.test(String(e.message || e))) return; } }
+  else if (navigator.share) { try { await navigator.share({ title: 'Tesori', text: testo }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
+  copia(testo);
+}
+function setPath(path, val) {
+  const ks = path.split('.'); let o = G;
+  for (let i = 0; i < ks.length - 1; i++) o = o[ks[i]];
+  o[ks[ks.length - 1]] = val;
+}
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-act],[data-tab]');
+  if (!b) return;
+  if (b.dataset.tab) { G.tab = b.dataset.tab; render(); window.scrollTo(0, 0); return; }
+  const a = b.dataset.act, k = b.dataset.k, p = b.dataset.p, i = +b.dataset.i;
+  const res = k ? G.ultimo[k] : null;
+  switch (a) {
+    case 'chiudi': chiudiModale(); return;
+    case 'chiudiFuori': if (ev.target === b) chiudiModale(); return;
+    case 'tmodo': G.tesoro.modo = b.dataset.v; break;
+    case 'tliv': G.tesoro.livello = Math.min(20, Math.max(1, G.tesoro.livello + +b.dataset.v)); break;
+    case 'tquanti': G.tesoro.quanti = +b.dataset.v; break;
+    case 'tira': {
+      const T = G.tesoro;
+      nuovoRisultato('tesoro', T.modo === 'livello' ? m.tesoroPerLivello(T.livello) : m.tesoroPerGrado(T.grado, T.quanti, { parti: T.parti, armi: T.armi }));
+      break;
+    }
+    case 'rt': m.ritiraTesoro(get(res, p), opzRitiro(k, res, p)); break;
+    case 'ri': { const R = get(res, p); m.ritiraIncantesimo(R.pergamene, i); m.aggiornaPrezzoPergamene(R); break; }
+    case 'rp': m.ritiraParte(get(res, p), i); break;
+    case 'sk': apriModale(scheda(get(res, p))); return;
+    case 'cap': apriModale(schedaCapacita(get(res, p))); return;
+    case 'riga': apriModale(scheda(rigaComeOggetto(m.perId[b.dataset.id]))); return;
+    case 'salva': {
+      const r = G.ultimo[k], j = G.storico.findIndex(h => h.id === r.id);
+      const voce = { id: r.id, k, etichetta: j >= 0 ? G.storico[j].etichetta : sintesi({ res: r }), data: r.data, res: clone(r) };
+      if (j >= 0) G.storico[j] = voce; else { G.storico.unshift(voce); G.storico = G.storico.slice(0, 50); }
+      toast(j >= 0 ? 'Aggiornato nello storico' : 'Salvato nello storico'); break;
+    }
+    case 'copia': copia(m.testo(G.ultimo[k])); return;
+    case 'condividi': condividi(m.testo(G.ultimo[k])); return;
+    case 'pliv': G.partenza.livello = Math.min(20, Math.max(2, G.partenza.livello + +b.dataset.v)); break;
+    case 'ptipo': { const t = G.partenza.scudo.tipi, v = b.dataset.v; G.partenza.scudo.tipi = t.includes(v) ? t.filter(x => x !== v) : t.concat([v]); if (!G.partenza.scudo.tipi.length) G.partenza.scudo.tipi = [v]; break; }
+    case 'parmaadd': G.partenza.armi.push({ modo: 'vol3', categoria: 'guerra', tipo: 'mischia', distanza: false, tabella: 'Marzialista', nome: '' }); break;
+    case 'parmadel': G.partenza.armi.splice(i, 1); break;
+    case 'pamodo': G.partenza.armi[i].modo = b.dataset.v; break;
+    case 'genera': {
+      const P = clone(G.partenza);
+      P.armi = P.armi.map(x => Object.assign(x, { distanza: x.modo === 'vol3' ? x.tipo === 'tiro' : x.distanza }));
+      Object.keys(APERTI).filter(x => x.startsWith('parti.')).forEach(x => delete APERTI[x]);
+      nuovoRisultato('partenza', m.partenza(P)); break;
+    }
+    case 'mliv': G.mercato.livello = Math.min(20, Math.max(1, G.mercato.livello + +b.dataset.v)); G.mercato.grado = ''; break;
+    case 'mgen': nuovoRisultato('mercato', m.mercato(G.mercato.tipo, G.mercato.livello, G.mercato.grado || null)); break;
+    case 'mperg': {
+      const info = m.infoInsediamento(G.mercato.tipo);
+      const p0 = m.pergamenaSingola(null, Math.min(+G.mercato.pergLiv || 1, info.incantesimi));
+      const R = m.aggiornaPrezzoPergamene({ pergamene: p0, categoria: 'Pergamena', tiri: [] });
+      G.ultimo.mercatoPerg = [R].concat(G.ultimo.mercatoPerg || []).slice(0, 20); break;
+    }
+    case 'mpergclr': G.ultimo.mercatoPerg = []; break;
+    case 'pgen': {
+      const C = G.consulta;
+      const liv = C.pLiv ? +C.pLiv : (C.pClasse ? (l => l[(Motore.rngCasuale(l.length)) - 1])(Object.keys(m.listaDi(C.pClasse)).filter(x => +x >= 1).map(Number)) : Motore.rngCasuale(9));
+      const p0 = m.pergamenaSingola(C.pClasse || null, liv);
+      const R = m.aggiornaPrezzoPergamene({ pergamene: p0, categoria: 'Pergamena', tiri: [] });
+      G.ultimo.perg = [R].concat(G.ultimo.perg || []).slice(0, 20); break;
+    }
+    case 'pclr': G.ultimo.perg = []; break;
+    case 'altri': consultaMax += 80; break;
+    case 'hapri': { const h = G.storico[i]; G.ultimo[h.k] = clone(h.res); G.tab = h.k; window.scrollTo(0, 0); break; }
+    case 'hdel': G.storico.splice(i, 1); break;
+    case 'hclr': if (confermaSvuota) { G.storico = []; confermaSvuota = false; } else { confermaSvuota = true; setTimeout(() => { confermaSvuota = false; render(); }, 4000); } break;
+    default: return;
+  }
+  const scroll = window.scrollY; render();
+  if (['tira', 'genera', 'mgen'].includes(a)) { const r = $('.res'); if (r) r.scrollIntoView({ behavior: 'smooth', block: 'start' }); } else window.scrollTo(0, scroll);
+});
+document.addEventListener('change', ev => {
+  const t = ev.target;
+  if (t.dataset.act === 'cc') {
+    const res = G.ultimo[t.dataset.k], R = get(res, t.dataset.p);
+    m.cambiaClasse(R.pergamene, t.value); m.aggiornaPrezzoPergamene(R);
+  } else if (t.dataset.set === 'consulta.q') return;          // gestita dall'evento input
+  else if (t.dataset.set) {
+    setPath(t.dataset.set, t.value);
+    if (t.dataset.set === 'mercato.tipo') G.mercato.grado = '';
+    if (t.dataset.set === 'consulta.incClasse') G.consulta.incLiv = '1';
+  } else if (t.dataset.chk) setPath(t.dataset.chk, t.checked);
+  else if (t.dataset.hist != null) { G.storico[+t.dataset.hist].etichetta = t.value; salvaStato(); return; }
+  else return;
+  const scroll = window.scrollY; render(); window.scrollTo(0, scroll);
+});
+let tCerca;
+document.addEventListener('input', ev => {
+  const t = ev.target;
+  if (t.dataset.set !== 'consulta.q') return;
+  G.consulta.q = t.value; consultaMax = 60;
+  clearTimeout(tCerca);
+  tCerca = setTimeout(() => { const pos = t.selectionStart; render(); const n = document.querySelector('[data-set="consulta.q"]'); if (n) { n.focus(); n.setSelectionRange(pos, pos); } }, 250);
+});
+document.addEventListener('keydown', ev => { if (ev.key === 'Escape') chiudiModale(); });
+render();
+</script>
