@@ -13,3 +13,9 @@ App dei Tesori per il Manuale dei Tesori v2.7: tesori casuali per livello del gr
 - `sorgenti/motore.js`: tutti gli algoritmi di tiro (funzioni pure, dado sostituibile).
 - `sorgenti/template.html`: interfaccia (5 schede).
 - `Tesori_app_design_v1.md`: decisioni A–E, fa fede.
+
+## Versioni native
+- Android: Capacitor (`android/`, `capacitor.config.json`, `package.json`); workflow `.github/workflows/apk.yml` → Release `v1.0.N` con `Tesori-N.apk`.
+- Windows: Electron (`desktop/`); workflow `windows.yml` → Release `win-1.0.N` (portatile e installazione).
+- Icone e splash: `python3 sorgenti/icone.py`. Prima di ogni `node`: `export NODE_PATH=$(npm root -g)`.
+- Il PDF su Android usa Filesystem (cache) + Share; nel browser scarica il file.

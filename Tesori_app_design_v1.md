@@ -10,9 +10,9 @@ L'app non cambia il manuale: le correzioni per la v2.7.1 sono nella sezione E e 
 | Passo | Stato |
 |---|---|
 | 1. Analisi in chat: funzioni, schermate, algoritmi, punti da decidere (A–E) | ✅ confermato (05/10/2026) |
-| 2. Dati (`tesori_db_v1.1.json`, `incantesimi.json`), motore, pagina HTML (artifact da provare), test automatici | 🔄 pagina pubblicata da provare (05/10/2026); test tutti superati |
-| 3. Versioni native: Capacitor (Android), Electron (Windows), workflow delle Releases | ⬜ |
-| 4. Chiusura: `claude/stato_lavori.md`, sezione K del design doc del database, zip dei sorgenti in chat | ⬜ |
+| 2. Dati (`tesori_db_v1.1.json`, `incantesimi.json`), motore, pagina HTML (artifact da provare), test automatici | ✅ provata e confermata da Massy (08/10/2026); test tutti superati |
+| 3. Versioni native: Capacitor (Android), Electron (Windows), workflow delle Releases | ✅ release `v1.0.1` (APK) e `win-1.0.1`; provate da Massy, PDF compresi (08/10/2026) |
+| 4. Chiusura: `claude/stato_lavori.md`, sezione K del design doc del database, zip dei sorgenti in chat | ✅ (08/10/2026) |
 
 ## A. SCHERMATE ✅
 
@@ -202,3 +202,4 @@ Tipo di insediamento → numero di oggetti, speciali e offset; grado = PL − of
 | K7 | Vol. 2, liste degli incantesimi | Fattucchiere: intestazioni con il numero sbagliato (3° «76» ma 89 voci; 5° «43» ma 62; 6° «40» ma 43). Convocatore 6°: Teletrasporto* (niente teletrasporto a lunga distanza). Intestazioni da uniformare («Lista degli incantesimi da fattucchiere», «Incantesimi da inquisitore») |
 | K8 | Cap. 3, pergamene | Righe «Pergamena di livello N (classe)» → «Pergamene di grado N (classe)» con la sotto-tabella B2; 107 righe nuove «Pergamene di grado N» in coda ai gradi 1–5 e 7–20; prezzo della pergamena di 1° livello 25 mo (colonna dello Stregone), che sostituisce i 50 mo della A15 (le pozioni restano con la A15) |
 | K9 | Cap. 2, Composizione del tesoro | Grado 3 e gradi 4–20: 1d2 parte / Oggetto vario; il tipo di parte con 1d2 (grado 3) o 1d3 (gradi 4–20), come nella nota ¹ |
+| K10 | Cap. 4, equipaggiamento di partenza | «Seconda arma dall'8° livello»: l'app la legge come regola interpretativa (vedi sezione C); da confermare nel testo del manuale |
